@@ -1,7 +1,17 @@
 using Application.Interfaces;
 using Application.Models;
 using Application.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
+
+//using Infrastructure.SQL;
+//using Infrastructure.SQL.Repository;
+using Microsoft.EntityFrameworkCore;
+
+using Infrastructure.SQLite;
+using Infrastructure.SQLite.Repository;
+
+//using Infrastructure.MongoDbDriver;
+//using Infrastructure.MongoDbDriver.Repository;
+
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +20,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddScoped<IPeopleRepository, PeopleRepository>();
 builder.Services.AddScoped<IPeopleService, PeoplePeopleService>();
 
+//builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("InMemoryDb")); // SQL EFcore InMemory
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite()); // SQL EFcore InMemory
 
 var app = builder.Build();
 
